@@ -5,152 +5,252 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy New Year</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
 <style>
 body {
     margin: 0;
-    font-family: 'Georgia', serif;
-    background: radial-gradient(circle at top, #0b0f1f, #000);
+    font-family: 'Playfair Display', serif;
+    background: radial-gradient(circle at top, #0b1220, #02010d);
     color: white;
-    text-align: center;
+    overflow-x: hidden;
 }
 
 /* LOCK SCREEN */
 #lock {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg,#05050f,#0a0a1f);
+    /* Added design background to lock screen */
+    background: radial-gradient(circle at center, #1a1a2e 0%, #020202 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 1000;
+}
+
+#lock h2 {
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: #ffd27d;
+    text-shadow: 0 0 10px rgba(255, 210, 125, 0.5);
 }
 
 #lock input {
     padding: 14px;
     width: 240px;
-    border-radius: 25px;
-    border: none;
+    border-radius: 8px;
+    border: 1px solid #ff8fa3;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 15px;
+    /* Colored text when typing */
+    color: #ff8fa3; 
+    font-weight: bold;
     text-align: center;
-    font-size: 16px;
+    outline: none;
+    font-size: 18px;
 }
 
 #lock button {
-    margin-top: 15px;
+    margin-top: 20px;
     padding: 12px 30px;
     border-radius: 25px;
     border: none;
-    background: #ff7aa2;
+    background: linear-gradient(45deg, #ff8fa3, #ff4d6d);
     color: white;
     font-size: 16px;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#lock button:hover {
+    transform: scale(1.05);
 }
 
 /* CONTENT */
 #content {
     display: none;
-    padding-bottom: 80px;
+    padding-bottom: 50px;
 }
 
+/* TITLE */
 h1 {
+    text-align: center;
     margin-top: 40px;
-    font-size: 2.5em;
+    font-size: 2.6em;
+    color: #ffd27d;
 }
 
+/* IMAGE */
 .photo {
-    width: 260px;
-    border-radius: 18px;
+    width: 280px;
     margin: 30px auto;
     display: block;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255,255,255,0.2);
 }
 
+/* POEM & MESSAGE */
 .poem {
-    max-width: 700px;
-    margin: 30px auto;
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: center;
     font-size: 1.3em;
     line-height: 1.8;
 }
 
 .poem span {
     display: block;
+    opacity: 0; /* Hidden by default for animation */
+    transform: translateY(30px); /* Positioned lower for slide-up */
+    transition: all 1.5s ease;
     margin-bottom: 10px;
-    opacity: 1;
 }
 
-/* FINAL MESSAGE FIX */
-.final {
+/* Special styling for the final message */
+.personal-note {
     margin-top: 50px;
-    font-size: 1.4em;
-    color: #ffd9ec;
-    opacity: 1;
+    color: #ff8fa3;
+    font-style: italic;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 30px;
 }
 
 /* SUN & MOON */
 .sun {
     position: fixed;
-    top: 20px;
-    right: 30px;
-    width: 90px;
-    height: 90px;
-    background: radial-gradient(circle,#ffd27d,#ff9f43);
+    top: 30px;
+    right: 40px;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, #ffd27d, #ff9f43);
     border-radius: 50%;
+    box-shadow: 0 0 60px rgba(255,200,100,0.8);
+    z-index: -1;
 }
 
 .moon {
     position: fixed;
-    bottom: 30px;
-    left: 30px;
-    width: 70px;
-    height: 70px;
-    background: radial-gradient(circle,#f5f5f5,#bbb);
+    bottom: 40px;
+    left: 40px;
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, #f4f4f4, #bbb);
     border-radius: 50%;
+    box-shadow: 0 0 40px rgba(255,255,255,0.6);
+    z-index: -1;
 }
+
+/* PARTICLES */
+.sparkle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, #fff, #ffd27d);
+    border-radius: 50%;
+    animation: float 6s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh) scale(0); opacity: 1; }
+    to { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+audio { display: none; }
 </style>
 </head>
 
 <body>
 
-<!-- PASSWORD -->
 <div id="lock">
     <h2>Enter the Moment</h2>
-    <input id="pass" type="password" placeholder="Password">
-    <button onclick="unlock()">Enter</button>
+    <input type="password" id="pass" placeholder="Password">
+    <button onclick="unlock()">Open Your Year</button>
 </div>
 
-<!-- MAIN -->
 <div id="content">
     <div class="sun"></div>
     <div class="moon"></div>
 
-    <h1>Happy New Year 2026 🎉</h1>
+    <h1>Happy New Year 2026</h1>
 
-    <img src="photo1.jpg" class="photo">
+    <img src="photo1.jpg" class="photo" alt="Happy Moments">
 
-    <div class="poem">
+    <div class="poem" id="poemContainer">
         <span>A Pendant of Hope and the Woven Cloths</span>
         <span>A Bond Too Fragile Yet Always Sealed</span>
         <span>We Fight, We Break, We Care, We Heal</span>
         <span>All In the Same Like Destiny’s Will</span>
         <span>Secret We Know, Precious Than Gold</span>
         <span>An Unfinished Dream of Two Idiot Souls</span>
+        
+        <div class="personal-note">
+            <span>Happy New Year, Besto Frendo Divya 🌙✨</span>
+            <span>May this year bring you peace, love, and everything your heart deserves.</span>
+            <span>Also growth, money, stability for our bond and both of us.</span>
+        </div>
     </div>
 
-    <div class="final">
-        Happy New Year, Besto Frendo Divya 🌙✨<br>
-        May this year bring you peace, love, and everything your heart deserves.<br>
-        Also growth, money, stability — for our bond and both of us.
-    </div>
+    <audio id="bgm" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 </div>
 
 <script>
 function unlock() {
     const pass = document.getElementById("pass").value;
+    // Password remains the same as your original code
     if (pass === "Dibbu&ZuZu") {
         document.getElementById("lock").style.display = "none";
         document.getElementById("content").style.display = "block";
+        
+        startMusic();
+        revealPoem();
+        startSparkles();
     } else {
         alert("Wrong password 💔");
     }
+}
+
+function startMusic() {
+    const music = document.getElementById("bgm");
+    music.volume = 0;
+    music.play().catch(e => console.log("Audio play deferred"));
+    
+    let vol = 0;
+    const fade = setInterval(() => {
+        if (vol < 0.8) {
+            vol += 0.02;
+            music.volume = vol;
+        } else clearInterval(fade);
+    }, 100);
+}
+
+function revealPoem() {
+    // Selects all spans within the poem and personal note
+    const lines = document.querySelectorAll(".poem span");
+    lines.forEach((el, i) => {
+        setTimeout(() => {
+            el.style.opacity = "1";
+            el.style.transform = "translateY(0)";
+        }, i * 1500); // Lines reveal one by one every 1.5 seconds
+    });
+}
+
+function startSparkles() {
+    setInterval(() => {
+        const s = document.createElement("div");
+        s.className = "sparkle";
+        s.style.left = Math.random() * 100 + "vw";
+        // Vary sparkle size
+        const size = Math.random() * 6 + 2 + "px";
+        s.style.width = size;
+        s.style.height = size;
+        
+        document.body.appendChild(s);
+        setTimeout(() => s.remove(), 6000);
+    }, 400);
 }
 </script>
 
