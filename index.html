@@ -7,126 +7,170 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
+    :root {
+        --accent: #ff8fa3;
+        --gold: #ffd27d;
+    }
+
     body {
         margin: 0;
+        padding: 0;
         font-family: 'Playfair Display', serif;
-        background: radial-gradient(circle at top, #0b1220, #02010d);
+        background: #02010d; /* Base dark color */
         color: white;
         overflow-x: hidden;
         min-height: 100vh;
     }
 
-    /* LOCK SCREEN DESIGN */
+    /* BACKGROUND DESIGN */
+    .bg-gradient {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(circle at top, #0b1220, #02010d);
+        z-index: -2;
+    }
+
+    /* LOCK SCREEN */
     #lock {
         position: fixed;
         inset: 0;
-        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
-                    url('https://images.unsplash.com/photo-1464802686167-b939a67e06a1?auto=format&fit=crop&w=1000&q=80');
-        background-size: cover;
-        background-position: center;
+        background: #02010d;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-        z-index: 1000;
-        transition: opacity 0.8s ease;
+        z-index: 9999;
+        transition: opacity 1s ease;
     }
 
     .lock-box {
         background: rgba(255, 255, 255, 0.05);
-        padding: 40px;
+        padding: 50px 30px;
         border-radius: 20px;
         backdrop-filter: blur(15px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        box-shadow: 0 0 40px rgba(0,0,0,0.8);
     }
 
     #lock h2 {
-        color: #ffd27d;
-        margin-bottom: 20px;
-        font-size: 1.5rem;
+        color: var(--gold);
+        margin-bottom: 25px;
+        letter-spacing: 3px;
     }
 
     #lock input {
         padding: 15px;
-        width: 250px;
-        border-radius: 12px;
-        border: 2px solid #ff8fa3;
-        background: rgba(0,0,0,0.2);
-        color: #ff8fa3; /* Design colored text when typing */
-        font-size: 1.2rem;
+        width: 260px;
+        border-radius: 10px;
+        border: 2px solid var(--accent);
+        background: rgba(0,0,0,0.5);
+        /* DESIGN COLORED TEXT WHEN TYPING */
+        color: var(--accent);
+        font-size: 1.3rem;
         text-align: center;
         outline: none;
         font-weight: bold;
+        box-shadow: 0 0 15px rgba(255, 143, 163, 0.2);
     }
 
     #lock button {
-        margin-top: 25px;
-        padding: 12px 35px;
+        margin-top: 30px;
+        padding: 12px 45px;
         border-radius: 30px;
         border: none;
-        background: #ff8fa3;
+        background: var(--accent);
         color: white;
-        font-size: 18px;
-        cursor: pointer;
+        font-size: 1.1rem;
         font-weight: bold;
+        cursor: pointer;
         transition: 0.3s;
     }
 
     #lock button:hover { transform: scale(1.05); background: #ff4d6d; }
 
-    /* CONTENT SECTION */
+    /* MAIN CONTENT */
     #content {
-        display: none;
+        display: none; /* Controlled by JS */
         opacity: 0;
-        transition: opacity 1s ease;
+        transition: opacity 1.5s ease;
+        padding-top: 80px;
+        text-align: center;
+    }
+
+    /* SUN & MOON DESIGN */
+    .sun {
+        position: fixed;
+        top: 50px;
+        right: 50px;
+        width: 120px;
+        height: 120px;
+        background: radial-gradient(circle, #ffd27d, #ff9f43);
+        border-radius: 50%;
+        box-shadow: 0 0 80px rgba(255, 210, 125, 0.5);
+        z-index: 100;
+        animation: glow 4s infinite ease-in-out;
+    }
+
+    .moon {
+        position: fixed;
+        bottom: 80px;
+        left: 60px;
+        width: 90px;
+        height: 90px;
+        background: radial-gradient(circle, #ffffff, #bbbbbb);
+        border-radius: 50%;
+        box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+        z-index: 100;
+        animation: glow 5s infinite ease-in-out;
+    }
+
+    @keyframes glow {
+        0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 40px rgba(255,255,255,0.2); }
+        50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 70px rgba(255,255,255,0.5); }
     }
 
     h1 {
-        text-align: center;
-        margin-top: 50px;
-        font-size: 3em;
-        color: #ffd27d;
+        font-size: 3.5rem;
+        color: var(--gold);
+        text-shadow: 0 0 20px rgba(255, 210, 125, 0.4);
+        margin-bottom: 20px;
     }
 
     .photo {
-        width: 280px;
-        margin: 40px auto;
-        display: block;
+        width: 300px;
         border-radius: 20px;
-        box-shadow: 0 0 30px rgba(255, 143, 163, 0.3);
+        margin: 20px auto;
+        border: 2px solid rgba(255,255,255,0.2);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
 
-    /* POEM ANIMATION */
+    /* POEM ANIMATION FIX */
     .poem {
         max-width: 800px;
-        margin: 50px auto;
-        text-align: center;
-        font-size: 1.4em;
-        line-height: 1.8;
-        padding: 0 20px;
+        margin: 40px auto;
+        font-size: 1.5rem;
+        line-height: 2;
     }
 
     .poem span {
         display: block;
         opacity: 0;
-        transform: translateY(20px);
-        transition: all 1.2s ease-out;
-        margin-bottom: 15px;
+        transform: translateY(30px);
+        transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 10px;
     }
 
-    /* Active class for animation */
-    .poem span.active {
+    /* Class added by JS to trigger animation */
+    .poem span.reveal {
         opacity: 1;
         transform: translateY(0);
     }
 
     .personal-note {
         margin-top: 60px;
-        padding-top: 30px;
+        padding: 40px 20px;
         border-top: 1px solid rgba(255,255,255,0.1);
-        color: #ffb3c1;
+        color: #ffb3c1; /* Soft pink for the ending */
     }
 
     /* SPARKLES */
@@ -135,32 +179,38 @@
         background: white;
         border-radius: 50%;
         pointer-events: none;
-        animation: fly 6s linear forwards;
+        z-index: 1000;
+        animation: rise 5s linear forwards;
     }
 
-    @keyframes fly {
+    @keyframes rise {
         0% { transform: translateY(100vh) scale(0); opacity: 1; }
-        100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
     }
 </style>
 </head>
 <body>
 
+<div class="bg-gradient"></div>
+
 <div id="lock">
     <div class="lock-box">
-        <h2>Enter our Secret Code</h2>
-        <input type="text" id="pass" placeholder="Password..." autocomplete="off">
+        <h2>DxZ Private Access</h2>
+        <input type="text" id="pass" placeholder="Enter Password..." autocomplete="off">
         <br>
-        <button onclick="unlock()">Enter 🌙</button>
+        <button onclick="unlock()">Unlock the Magic 🌙</button>
     </div>
 </div>
 
 <div id="content">
+    <div class="sun"></div>
+    <div class="moon"></div>
+
     <h1>Happy New Year 2026</h1>
 
-    <img src="photo1.jpg" class="photo" alt="Memory">
+    <img src="photo1.jpg" class="photo" alt="Our Moment">
 
-    <div class="poem">
+    <div class="poem" id="poemContainer">
         <span>A Pendant of Hope and the Woven Cloths</span>
         <span>A Bond Too Fragile Yet Always Sealed</span>
         <span>We Fight, We Break, We Care, We Heal</span>
@@ -182,56 +232,59 @@
 
 <script>
 function unlock() {
-    const input = document.getElementById("pass").value;
+    const p = document.getElementById("pass").value;
     
-    // PASSWORD UPDATED TO DxZ4Bond
-    if (input === "DxZ4Bond") {
-        const lock = document.getElementById("lock");
-        const content = document.getElementById("content");
-        
-        lock.style.opacity = "0";
-        setTimeout(() => {
-            lock.style.display = "none";
-            content.style.display = "block";
-            // Small delay to ensure display: block is processed before opacity
-            setTimeout(() => { content.style.opacity = "1"; }, 50);
-            
-            startMusic();
-            startSparkles();
-            animatePoem();
-        }, 800);
-        
-    } else {
-        alert("Wrong code! Think about our bond... 🌸");
-    }
-}
+    // PASSWORD CHECK
+    if (p === "DxZ4Bond") {
+        const lockScreen = document.getElementById("lock");
+        const mainContent = document.getElementById("content");
 
-function animatePoem() {
-    const lines = document.querySelectorAll(".poem span");
-    lines.forEach((line, index) => {
+        // 1. Hide Lock Screen
+        lockScreen.style.opacity = "0";
         setTimeout(() => {
-            line.classList.add("active");
-        }, index * 1200); // 1.2s delay between each line
-    });
+            lockScreen.style.display = "none";
+            
+            // 2. Show Content
+            mainContent.style.display = "block";
+            setTimeout(() => { mainContent.style.opacity = "1"; }, 50);
+
+            // 3. Start Visuals
+            startSparkles();
+            startMusic();
+            
+            // 4. Start Poem Animation (Staggered)
+            const lines = document.querySelectorAll(".poem span");
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    line.classList.add("reveal");
+                }, index * 1300); // 1.3 seconds between each line
+            });
+
+        }, 1000);
+
+    } else {
+        alert("Access Denied 💔 Try the secret bond code.");
+    }
 }
 
 function startMusic() {
     const music = document.getElementById("bgm");
     music.volume = 0.5;
-    music.play().catch(e => console.log("Audio requires user interaction"));
+    music.play().catch(() => console.log("Music play blocked by browser."));
 }
 
 function startSparkles() {
     setInterval(() => {
         const s = document.createElement("div");
         s.className = "sparkle";
-        const size = Math.random() * 6 + 2 + "px";
+        const size = Math.random() * 5 + 2 + "px";
         s.style.width = size;
         s.style.height = size;
         s.style.left = Math.random() * 100 + "vw";
         s.style.background = Math.random() > 0.5 ? "#ffd27d" : "#ffffff";
+        s.style.boxShadow = "0 0 10px white";
         document.body.appendChild(s);
-        setTimeout(() => s.remove(), 6000);
+        setTimeout(() => s.remove(), 5000);
     }, 400);
 }
 </script>
