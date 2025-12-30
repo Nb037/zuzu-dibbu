@@ -20,22 +20,32 @@
     #lock {
         position: fixed;
         inset: 0;
-        background: linear-gradient(135deg, #02010d 0%, #1a1a2e 100%);
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), 
+                    url('https://images.unsplash.com/photo-1464802686167-b939a67e06a1?auto=format&fit=crop&w=1000&q=80');
+        background-size: cover;
+        background-position: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         z-index: 1000;
+        transition: opacity 0.8s ease;
     }
 
     .lock-box {
         background: rgba(255, 255, 255, 0.05);
         padding: 40px;
         border-radius: 20px;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(15px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
         box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    #lock h2 {
+        color: #ffd27d;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
     }
 
     #lock input {
@@ -43,18 +53,12 @@
         width: 250px;
         border-radius: 12px;
         border: 2px solid #ff8fa3;
-        background: transparent;
-        margin-top: 20px;
-        /* Colored text when typing */
-        color: #ff8fa3; 
+        background: rgba(0,0,0,0.2);
+        color: #ff8fa3; /* Design colored text when typing */
         font-size: 1.2rem;
         text-align: center;
         outline: none;
-        transition: 0.3s;
-    }
-
-    #lock input:focus {
-        box-shadow: 0 0 15px rgba(255, 143, 163, 0.5);
+        font-weight: bold;
     }
 
     #lock button {
@@ -67,13 +71,16 @@
         font-size: 18px;
         cursor: pointer;
         font-weight: bold;
+        transition: 0.3s;
     }
 
-    /* CONTENT */
+    #lock button:hover { transform: scale(1.05); background: #ff4d6d; }
+
+    /* CONTENT SECTION */
     #content {
         display: none;
         opacity: 0;
-        transition: opacity 1s ease-in;
+        transition: opacity 1s ease;
     }
 
     h1 {
@@ -81,63 +88,59 @@
         margin-top: 50px;
         font-size: 3em;
         color: #ffd27d;
-        text-shadow: 0 0 20px rgba(255, 210, 125, 0.3);
     }
 
     .photo {
-        width: 300px;
+        width: 280px;
         margin: 40px auto;
         display: block;
-        border-radius: 25px;
-        box-shadow: 0 0 40px rgba(255, 143, 163, 0.4);
+        border-radius: 20px;
+        box-shadow: 0 0 30px rgba(255, 143, 163, 0.3);
     }
 
-    /* POEM ANIMATION FIX */
+    /* POEM ANIMATION */
     .poem {
         max-width: 800px;
         margin: 50px auto;
         text-align: center;
         font-size: 1.4em;
-        line-height: 2;
+        line-height: 1.8;
+        padding: 0 20px;
     }
 
     .poem span {
         display: block;
         opacity: 0;
         transform: translateY(20px);
-        transition: all 1s ease-out;
-        margin-bottom: 10px;
+        transition: all 1.2s ease-out;
+        margin-bottom: 15px;
     }
 
-    /* This class triggers the animation via JS */
-    .poem span.show {
+    /* Active class for animation */
+    .poem span.active {
         opacity: 1;
         transform: translateY(0);
     }
 
     .personal-note {
         margin-top: 60px;
-        padding: 30px;
-        border-top: 1px solid rgba(255, 210, 125, 0.2);
+        padding-top: 30px;
+        border-top: 1px solid rgba(255,255,255,0.1);
         color: #ffb3c1;
-        font-style: italic;
     }
 
-    /* DECORATIONS */
-    .sun { position: fixed; top: -20px; right: -20px; width: 150px; height: 150px; background: radial-gradient(circle, #ffd27d, transparent); border-radius: 50%; filter: blur(30px); z-index: -1; }
-    .moon { position: fixed; bottom: 50px; left: 50px; width: 80px; height: 80px; background: #f4f4f4; border-radius: 50%; box-shadow: 0 0 50px rgba(255,255,255,0.3); z-index: -1; }
-
+    /* SPARKLES */
     .sparkle {
         position: fixed;
         background: white;
         border-radius: 50%;
         pointer-events: none;
-        animation: fly 5s linear forwards;
+        animation: fly 6s linear forwards;
     }
 
     @keyframes fly {
         0% { transform: translateY(100vh) scale(0); opacity: 1; }
-        100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
     }
 </style>
 </head>
@@ -145,20 +148,17 @@
 
 <div id="lock">
     <div class="lock-box">
-        <h2>Enter the Moment</h2>
-        <input type="password" id="pass" placeholder="Type Password...">
+        <h2>Enter our Secret Code</h2>
+        <input type="text" id="pass" placeholder="Password..." autocomplete="off">
         <br>
-        <button onclick="unlock()">Unlock 🌙</button>
+        <button onclick="unlock()">Enter 🌙</button>
     </div>
 </div>
 
 <div id="content">
-    <div class="sun"></div>
-    <div class="moon"></div>
-
     <h1>Happy New Year 2026</h1>
 
-    <img src="photo1.jpg" class="photo" alt="Our Memory">
+    <img src="photo1.jpg" class="photo" alt="Memory">
 
     <div class="poem">
         <span>A Pendant of Hope and the Woven Cloths</span>
@@ -184,50 +184,55 @@
 function unlock() {
     const input = document.getElementById("pass").value;
     
-    // NEW PASSWORD IS HERE
-    if (input === "DxZ4Bond") { 
-        document.getElementById("lock").style.display = "none";
+    // PASSWORD UPDATED TO DxZ4Bond
+    if (input === "DxZ4Bond") {
+        const lock = document.getElementById("lock");
         const content = document.getElementById("content");
-        content.style.display = "block";
         
-        // Fade in content
-        setTimeout(() => { content.style.opacity = "1"; }, 10);
+        lock.style.opacity = "0";
+        setTimeout(() => {
+            lock.style.display = "none";
+            content.style.display = "block";
+            // Small delay to ensure display: block is processed before opacity
+            setTimeout(() => { content.style.opacity = "1"; }, 50);
+            
+            startMusic();
+            startSparkles();
+            animatePoem();
+        }, 800);
         
-        startMusic();
-        startSparkles();
-        revealText();
     } else {
-        alert("Wrong password! Try again 🌸");
+        alert("Wrong code! Think about our bond... 🌸");
     }
 }
 
-function revealText() {
+function animatePoem() {
     const lines = document.querySelectorAll(".poem span");
     lines.forEach((line, index) => {
         setTimeout(() => {
-            line.classList.add("show");
-        }, index * 1200); // Lines appear one by one
+            line.classList.add("active");
+        }, index * 1200); // 1.2s delay between each line
     });
 }
 
 function startMusic() {
     const music = document.getElementById("bgm");
     music.volume = 0.5;
-    music.play().catch(() => console.log("Music needs interaction"));
+    music.play().catch(e => console.log("Audio requires user interaction"));
 }
 
 function startSparkles() {
     setInterval(() => {
         const s = document.createElement("div");
         s.className = "sparkle";
-        const size = Math.random() * 5 + 2 + "px";
+        const size = Math.random() * 6 + 2 + "px";
         s.style.width = size;
         s.style.height = size;
         s.style.left = Math.random() * 100 + "vw";
-        s.style.opacity = Math.random();
+        s.style.background = Math.random() > 0.5 ? "#ffd27d" : "#ffffff";
         document.body.appendChild(s);
-        setTimeout(() => s.remove(), 5000);
-    }, 300);
+        setTimeout(() => s.remove(), 6000);
+    }, 400);
 }
 </script>
 
